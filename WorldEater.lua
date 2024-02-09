@@ -2,6 +2,9 @@
 cur=0
 tar=0
 
+std=require "std"
+size=arg[1] or 100
+
 matA={}
 matA["n"]=0
 matA["nx"]=1
@@ -63,37 +66,6 @@ while true do
 end
 end
 
-function dropper()
-for i=1,16,1 do
-turtle.select(i)
-item=turtle.getItemDetail()
-if item~=nil then
-	if item["name"]~="minecraft:ancient_debris" then turtle.dropDown() end
-end
-end
-end
-
-function tunnel()
-for i=0,99,1 do
-while turtle.dig()==true do end
-turtle.forward()
-turtle.digDown()
-end
-turtle.digUp()
-turtle.up()
-turtle.turnLeft() turtle.turnLeft()
-for i=0,99,1 do
-turtle.digUp()
-while turtle.dig()==true do end
-turtle.forward()
-end
-turtle.turnLeft()
-dropper()
-while turtle.down()==false do bool,tab=turtle.inspectDown()
-if tab["name"]~="computercraft:turtle_normal" then turtle.digDown() end end
-end
-
-
 function getthere()
 while true do
 	if turtle.forward()==true then cur=cur+1
@@ -123,7 +95,9 @@ else
 	tar=matA["nx"];matA["nx"]=matA["nx"]+1
 end
 getthere()
-tunnel()
+std.trench(size)
+turtle.turnLeft()
+if estop==1 then break end
 end
 end
 

@@ -3,6 +3,8 @@ cur=0
 tar=0
 estop=0
 
+
+size=arg[1] or 50
 matA={}
 matA["n"]=0
 matA["nx"]=1
@@ -10,7 +12,7 @@ matB={}
 matB["n"]=0
 matB["nx"]=1
 
-
+std=require "std"
 function handleMatrix(ident)
 a=matA["n"]
 b=matB["n"]
@@ -53,45 +55,6 @@ while estop==0 do
 end
 end
 
-function dropper()
-for i=1,16,1 do
-turtle.select(i)
-item=turtle.getItemDetail()
-if item~=nil then
-	if item["name"]~="minecraft:ancient_debris" and tab["name"]~="computercraft:turtle_normal" then turtle.dropDown() end
-end
-end
-end
-
-function prospector()
-bool,tab=turtle.inspectDown()
-if tab["name"]=="minecraft:ancient_debris" then turtle.digDown() end
-bool,tab=turtle.inspectUp()
-if tab["name"]=="minecraft:ancient_debris" then turtle.digUp() end
-end
-
-function tunnel()
-for i=0,49,1 do
-while turtle.dig()==true do end
-turtle.forward()
-prospector()
-end
-turtle.turnRight() 
-while turtle.dig()==true do end
-turtle.forward();cur=cur+1
-turtle.turnRight()
-for i=0,48,1 do
-while turtle.dig()==true do end
-turtle.forward()
-prospector()
-end
-while turtle.forward()==false do end
-turtle.turnLeft()
-dropper()
-if turtle.getFuelLevel()<150 then turtle.turnRight();turtle.back();estop=1 end
-end
-
-
 function getthere()
 while true do
 	if turtle.forward()==true then cur=cur+1;turtle.digUp()
@@ -121,7 +84,10 @@ else
 	tar=matA["nx"];matA["nx"]=matA["nx"]+2
 end
 getthere()
-tunnel()
+std.prospect(size)
+cur=cur+1 --Test Line
+turtle.turnLeft()
+if turtle.getFuelLevel()<150 then turtle.turnRight();turtle.back();estop=1 end
 end
 end
 
