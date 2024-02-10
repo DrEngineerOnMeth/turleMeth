@@ -62,23 +62,37 @@ while turtle.down()==false do bool,tab=turtle.inspectDown()
 if tab["name"]~="computercraft:turtle_normal" then turtle.digDown() end end
 end
 
-function prospect(lenght) --Changes operating layer
+function prospect(lenght,turner) --Changes operating layer
+turner=turner or 0
 for i=0,lenght-1,1 do
 while turtle.dig()==true do end
 turtle.forward()
 prospector()
 end
-turtle.turnRight()
-while turtle.dig()==true do end
-turtle.forward()
-turtle.turnRight()
+if turner==0 then
+	turtle.turnRight()
+	while turtle.dig()==true do end
+	turtle.forward()
+	turtle.turnRight()
+else
+	turtle.turnLeft()
+	while turtle.dig()==true do end
+	turtle.forward()
+	turtle.turnLeft()
+end
 prospector()
 for i=0,lenght-2,1 do
 while turtle.dig()==true do end
 turtle.forward()
 prospector()
 end
-while turtle.forward()==false do end
+while turtle.forward()==false do
+bool,tab=turtle.inspect()
+if bool==true and tab["name"]~="computercraft:turtle_normal" then turtle.dig()
+else os.sleep(1)
+end
+
+end
 dropper()
 end
 
